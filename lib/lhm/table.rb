@@ -18,7 +18,7 @@ module Lhm
     def satisfies_id_autoincrement_requirement?
       !!((id = columns['id']) &&
         id[:extra] == 'auto_increment' &&
-        id[:type] =~ /int\(\d+\)/)
+        id[:type] =~ /(bigint|int)(\(\d+\)|$)/)
     end
 
     def destination_name
