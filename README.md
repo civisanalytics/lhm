@@ -50,8 +50,12 @@ ActiveRecord 3.2.x and 4.x (mysql and mysql2 adapters).
 
 ## Limitations
 
-Due to the Chunker implementation, Lhm requires that the table to migrate has a
-a monotonically increasing numeric key column called `id`.
+Due to the Chunker implementation, Lhm requires that the table to migrate has
+a single integer numeric key column called `id`.
+
+Another note about the Chunker, it performs static sized row copies against the `id`
+column.  Therefore sparse assignment of `id` can cause performance problems for the
+backfills.  Typically LHM assumes that `id` is an `auto_increment` style column.
 
 ## Installation
 
@@ -74,6 +78,7 @@ ActiveRecord::Base.establish_connection(
 # and migrate
 Lhm.change_table :users do |m|
   m.add_column :arbitrary, "INT(12)"
+  m.add_column :locale, "VARCHAR(2) NOT NULL DEFAULT 'en'"
   m.add_index  [:arbitrary_id, :created_at]
   m.ddl("alter table %s add column flag tinyint(1)" % m.name)
 end
@@ -192,19 +197,19 @@ Lhm.cleanup
 
 To remove any Lhm tables/triggers found:
 ```ruby
-Lhm.cleanup(true)
+Lhm.cleanup(:run)
 ```
 
 Optionally only remove tables up to a specific Time, if you want to retain previous migrations.
 
 Rails:
 ```ruby
-Lhm.cleanup(true, until: 1.day.ago)
+Lhm.cleanup(:run, until: 1.day.ago)
 ```
 
 Ruby:
 ```ruby
-Lhm.cleanup(true, until: Time.now - 86400)
+Lhm.cleanup(:run, until: Time.now - 86400)
 ```
 
 ## Contributing
