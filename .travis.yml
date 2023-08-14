@@ -2,7 +2,7 @@ language: ruby
 before_script:
   - "mysql -e 'create database lhm;'"
 rvm:
-  - 3.0.6
+  - 3.0.4
 sudo: false
 gemfile:
   - gemfiles/ar-6.0_mysql2.gemfile
