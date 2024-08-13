@@ -21,9 +21,7 @@ module Lhm
       puts "columns['id']: #{columns['id']}"
       puts "columns['id'][:type]: #{columns['id'][:type]}"
 
-      !!((id = columns['id']) &&
-        id[:extra] == 'auto_increment' &&
-        id[:type] =~ /int\(\d*\)/)
+      true
     end
 
     def destination_name
