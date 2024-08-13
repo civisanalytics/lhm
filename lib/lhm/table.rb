@@ -16,9 +16,14 @@ module Lhm
     end
 
     def satisfies_id_autoincrement_requirement?
+
+      puts "columns: #{@columns}"
+      puts "columns['id']: #{columns['id']}"
+      puts "columns['id'][:type]: #{columns['id'][:type]}"
+
       !!((id = columns['id']) &&
         id[:extra] == 'auto_increment' &&
-        id[:type] =~ /int\(\d+\)/)
+        id[:type] =~ /int\(\d*\)/)
     end
 
     def destination_name
